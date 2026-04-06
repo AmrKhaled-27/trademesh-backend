@@ -7,7 +7,9 @@
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky"
+    "prepare": "husky",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check"
   },
   "keywords": [],
   "author": "",
@@ -15,13 +17,23 @@
   "type": "module",
   "devDependencies": {
     "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
     "nodemon": "^3.1.14",
     "prettier": "^3.8.1",
     "prisma": "^6.19.3"
   },
+  "lint-staged": {
+    "*.{js,json,md}": "prettier --write"
+  },
   "dependencies": {
+    "@prisma/client": "^6.19.3",
+    "bcrypt": "^6.0.0",
     "dotenv": "^17.4.0",
     "express": "^5.2.1",
+    "get-port": "^7.2.0",
+    "jsonwebtoken": "^9.0.3",
+    "nodemailer": "^8.0.4",
+    "swagger-ui-express": "^5.0.1",
     "zod": "^4.3.6"
   }
 }
