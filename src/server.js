@@ -1,8 +1,10 @@
 import 'dotenv/config';
 import { env } from './config/env.js'; // MUST be imported immediately after dotenv
 import express from 'express';
+import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import authRoutes from './modules/auth/auth.routes.js';
+import userRoutes from './modules/user/user.routes.js';
 import { responseInterceptor } from './middlewares/responseInterceptor.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { swaggerDocument } from './docs/swagger.js';
@@ -10,6 +12,7 @@ import { swaggerDocument } from './docs/swagger.js';
 const app = express();
 const PORT = env.PORT;
 
+app.use(cors());
 app.use(express.json());
 app.use(responseInterceptor);
 
@@ -18,6 +21,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Main entry point for modules
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 
 // General catch for unknown routes (404)
 app.use((req, res, next) => {

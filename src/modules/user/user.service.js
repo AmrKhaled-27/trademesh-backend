@@ -32,6 +32,18 @@ export const createUser = async ({ email, name, password }) => {
 };
 
 /**
+ * Find a user by their unique ID.
+ *
+ * @param {string} id - The unique user identifier.
+ * @returns {Promise<import('@prisma/client').User|null>} - Returns the user if found.
+ */
+export const findUserById = async (id) => {
+  return prisma.user.findUnique({
+    where: { id },
+  });
+};
+
+/**
  * Updates a user's OTP fields in the database.
  *
  * @param {string} userId - The user ID in the database.
