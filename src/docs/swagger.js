@@ -1,4 +1,5 @@
 import { authPaths } from '../modules/auth/auth.docs.js';
+import { userPaths } from '../modules/user/user.docs.js';
 
 export const swaggerDocument = {
   openapi: '3.0.0',
@@ -53,8 +54,12 @@ export const swaggerDocument = {
       },
     },
   },
-  tags: [{ name: 'Auth', description: 'Authentication and User Management' }],
+  tags: [
+    { name: 'Auth', description: 'Authentication and 2FA' },
+    { name: 'Users', description: 'User Profile and Management' },
+  ],
   paths: {
     ...authPaths,
+    ...userPaths,
   },
 };
