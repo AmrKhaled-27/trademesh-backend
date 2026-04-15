@@ -49,11 +49,11 @@ Configure your `.env` file according to `src/config/env.js`. You will need `DATA
 **3. Database Sync**
 
 ```bash
-# Push Prisma schema to your PostgreSQL database
+# Push Prisma schema to your PostgreSQL database (Automatically runs prisma generate)
 npx prisma db push
 
-# Generate the strictly typed Prisma Client
-npx prisma generate
+# (Optional) Fully reset/drop the database and re-push the schema
+npx prisma db push --force-reset
 ```
 
 **4. Start the Application**
