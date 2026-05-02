@@ -1,5 +1,5 @@
-import { authPaths } from '../modules/auth/auth.docs.js';
-import { userPaths } from '../modules/user/user.docs.js';
+import { authPaths } from '../../modules/auth/auth.docs.js';
+import { userPaths } from '../../modules/user/user.docs.js';
 
 export const swaggerDocument = {
   openapi: '3.0.0',

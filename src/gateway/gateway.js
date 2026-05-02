@@ -1,10 +1,10 @@
 import 'dotenv/config';
-import { env } from './config/env.js'; // MUST be imported immediately after dotenv
+import { env } from '../config/env.js'; // MUST be imported immediately after dotenv
 import express from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
-import authRoutes from './modules/auth/auth.routes.js';
-import userRoutes from './modules/user/user.routes.js';
+import authRoutes from '../modules/auth/auth.routes.js';
+import userRoutes from '../modules/user/user.routes.js';
 import { responseInterceptor } from './middlewares/responseInterceptor.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { swaggerDocument } from './docs/swagger.js';

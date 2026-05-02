@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { AppError } from '../utils/AppError.js';
+import { AppError } from '../../utils/AppError.js';
 
 /**
  * Creates an Express middleware that validates request payloads using Zod schemas.

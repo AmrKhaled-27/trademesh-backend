@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import * as userController from './user.controller.js';
-import { authenticate } from '../../middlewares/authenticate.js';
-import { asyncHandler } from '../../utils/asyncHandler.js';
+import { authenticate } from '../../gateway/middlewares/authenticate.js';
+import { forwardAction } from '../../gateway/forwarder.js';
+import { ACTIONS } from '../../utils/actionTypes.js';
 
 const router = Router();
 
@@ -10,6 +10,6 @@ const router = Router();
  * @desc Get current user profile
  * @access Private
  */
-router.get('/me', authenticate, asyncHandler(userController.getMe));
+router.get('/me', authenticate, forwardAction(ACTIONS.USER_GET_ME));
 
 export default router;

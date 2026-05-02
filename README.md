@@ -2,32 +2,37 @@
 
 Trademesh is a distributed online marketplace designed specifically to facilitate transactions using a virtual economy system where wallets hold virtual balances instead of direct fiat interactions. This platform offers robust user authentication, a secure wallet implementation, product management algorithms, and seamless API documentation via Swagger.
 
-## Architecture & Structure
+## Distributed Architecture (Smart Gateway + TCP Monolith)
 
-This project follows a strict **Feature-based Modular Architecture** designed for scalability and rapid development without cluttering centralized controllers.
+To satisfy advanced distributed systems requirements, this project follows an **Edge Gateway Pattern**. Standard HTTP REST traffic is intercepted by a Smart Gateway, parsed, validated, and finally transmitted via raw TCP sockets to the internal monolithic backend.
 
 ```
 trademesh-backend/
 ├── prisma/                 # Database schema and migrations
 ├── src/
 │   ├── config/             # Zod environment variable parsing/validation
-│   ├── docs/               # OpenAPI/Swagger centralized configuration
-│   ├── middlewares/        # Global interceptors (Validation, Errors, etc.)
-│   ├── utils/              # Tools (Prisma client singleton, AppErrors, async handlers)
-│   └── modules/            # The core features!
+│   ├── gateway/            # External HTTP Edge Gateway
+│   │   ├── gateway.js      # Express server entry point
+│   │   ├── forwarder.js    # Utility mapping HTTP paths to TCP Actions
+│   │   ├── tcpClient.js    # Raw net.Socket wrapper
+│   │   ├── docs/           # OpenAPI/Swagger configurations
+│   │   └── middlewares/    # Authentication & Zod payload validation
+│   ├── tcp-server/         # Internal Monolithic Core
+│   │   ├── server.js       # Raw TCP net.createServer entry point
+│   │   └── actions.js      # TCP Action dispatcher
+│   ├── utils/              # Tools (Prisma client singleton, AppErrors)
+│   └── modules/            # The core feature domains!
 │       ├── auth/           # All Auth related logic
 │       ├── user/           # Database interactions for users
 │       └── mailing/        # Mail server actions (Nodemailer OTP)
 ```
 
 **Adding a New Module:**
-When you add a new feature (e.g., `wallet`), you create `/src/modules/wallet/`. Inside it, you maintain full separation of concerns by creating:
+When you add a new feature (e.g., `wallet`), you create `/src/modules/wallet/`. Inside it, you maintain feature separation:
 
-- `wallet.routes.js`: Defines Express paths.
-- `wallet.controller.js`: Clean HTTP handlers (use the `asyncHandler` wrapper).
-- `wallet.service.js`: Business Logic and Prisma database access.
-- `wallet.dto.js`: Zod schema validation payloads.
-- `wallet.docs.js`: Swagger documentation definitions.
+- _Gateway Side_: `wallet.routes.js` and `wallet.dto.js` handle Express HTTP routing and Zod payload validation.
+- _TCP Side_: `wallet.controller.js` and `wallet.service.js` handle business logic and DB operations without ever touching HTTP.
+- _Docs_: `wallet.docs.js` maintains Swagger documentation definitions.
 
 ## Prerequisites
 
@@ -44,7 +49,11 @@ npm install
 ```
 
 **2. Setup Environment Variables**
-Configure your `.env` file according to `src/config/env.js`. You will need `DATABASE_URL` and `SMTP` configs.
+Configure your `.env` file according to `src/config/env.js`. You will need:
+
+- `DATABASE_URL`
+- `SMTP` configurations
+- `TCP_PORT` and `TCP_HOST` (Defaults to 5000 and 127.0.0.1)
 
 **3. Database Sync**
 
@@ -56,12 +65,16 @@ npx prisma db push
 npx prisma db push --force-reset
 ```
 
-**4. Start the Application**
+**4. Start the Application Processes**
+Because the system operates a strict edge-gateway to backend-socket flow, you must run both endpoints:
 
 ```bash
-# For active development (automatically restarts via Nodemon)
-npm run dev
+# Terminal 1: Boot the internal TCP Server
+npm run dev:tcp
+
+# Terminal 2: Boot the external HTTP Gateway
+npm run dev:gateway
 ```
 
 **API Documentation:**
-Once running, navigate to `http://localhost:3000/api-docs` to interact with the Swagger visual sandbox.
+Once the Gateway is running, navigate to `http://localhost:3000/api-docs` to interact with the Swagger visual sandbox.
