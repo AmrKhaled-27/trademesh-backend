@@ -1,6 +1,6 @@
 import { authPaths } from '../../modules/auth/auth.docs.js';
 import { userPaths } from '../../modules/user/user.docs.js';
-
+import { apiKeyPaths } from '../../modules/api-key/apiKey.docs.js';
 export const swaggerDocument = {
   openapi: '3.0.0',
   info: {
@@ -8,6 +8,7 @@ export const swaggerDocument = {
     version: '1.0.0',
     description: 'API Documentation for the Trademesh Marketplace backend.',
   },
+  security: [],
   servers: [
     {
       url: 'http://localhost:3000',
@@ -20,6 +21,11 @@ export const swaggerDocument = {
         type: 'http',
         scheme: 'bearer',
         bearerFormat: 'JWT',
+      },
+      apiKeyAuth: {
+        type: 'apiKey',
+        in: 'header',
+        name: 'x-api-key',
       },
     },
     schemas: {
@@ -57,9 +63,11 @@ export const swaggerDocument = {
   tags: [
     { name: 'Auth', description: 'Authentication and 2FA' },
     { name: 'Users', description: 'User Profile and Management' },
+    { name: 'API Keys', description: 'API key management for external store integrations' },
   ],
   paths: {
     ...authPaths,
     ...userPaths,
+    ...apiKeyPaths,
   },
 };

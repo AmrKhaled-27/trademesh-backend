@@ -10,4 +10,9 @@ export const ACTIONS = {
 
   // User Actions
   USER_GET_ME: 'USER_GET_ME',
+
+  // API Key Actions
+  API_KEY_CREATE: 'API_KEY_CREATE',
+  API_KEY_LIST: 'API_KEY_LIST',
+  API_KEY_REVOKE: 'API_KEY_REVOKE',
 };
