@@ -19,9 +19,10 @@ export const createApiKey = async ({ name }, userId) => {
     },
   });
 
+  const { key: _, isActive: __, ...safeApiKey } = apiKey;
   return {
-    ...apiKey,
-    key, //
+    ...safeApiKey,
+    key,
   };
 };
 
@@ -29,13 +30,14 @@ export const listApiKeys = async (userId) => {
   const apiKeys = await prisma.apiKey.findMany({
     where: {
       userId,
+      isActive: true,
     },
     orderBy: {
       createdAt: 'desc',
     },
   });
 
-  return apiKeys.map(({ key, ...apiKey }) => apiKey);
+  return apiKeys.map(({ key, isActive, ...apiKey }) => apiKey);
 };
 
 export const revokeApiKey = async (id, userId) => {
@@ -57,7 +59,7 @@ export const revokeApiKey = async (id, userId) => {
     },
   });
 
-  const { key, ...safeApiKey } = updatedApiKey;
+  const { key, isActive, ...safeApiKey } = updatedApiKey;
 
   return safeApiKey;
 };

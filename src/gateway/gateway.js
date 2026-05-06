@@ -9,21 +9,12 @@ import apiKeyRoutes from '../modules/api-key/apiKey.routes.js';
 import { responseInterceptor } from './middlewares/responseInterceptor.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { swaggerDocument } from './docs/swagger.js';
-import { verifyApiKey } from './middlewares/apiKey.middleware.js';
 const app = express();
 const PORT = env.PORT;
 
 app.use(cors());
 app.use(express.json());
 app.use(responseInterceptor);
-
-app.get('/api/test-api-key', verifyApiKey, (req, res) => {
-  res.json({
-    success: true,
-    message: 'API key works',
-    user: req.user,
-  });
-});
 
 // OpenAPI/Swagger UI Documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
