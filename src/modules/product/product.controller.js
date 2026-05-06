@@ -1,0 +1,59 @@
+import * as productService from './product.service.js';
+
+export const handleCreateProduct = async (data) => {
+  const product = await productService.createProduct(data.body, data.user.id);
+
+  return {
+    statusCode: 201,
+    body: {
+      message: 'Product created successfully',
+      product,
+    },
+  };
+};
+
+export const handleListProducts = async (data) => {
+  const { items, pagination } = await productService.listProducts(data.query);
+
+  return {
+    statusCode: 200,
+    body: {
+      products: items,
+      pagination,
+    },
+  };
+};
+
+export const handleGetProductById = async (data) => {
+  const product = await productService.findProductById(data.params.id);
+
+  return {
+    statusCode: 200,
+    body: {
+      product,
+    },
+  };
+};
+
+export const handleUpdateProduct = async (data) => {
+  const product = await productService.updateProduct(data.params.id, data.body, data.user.id);
+
+  return {
+    statusCode: 200,
+    body: {
+      message: 'Product updated successfully',
+      product,
+    },
+  };
+};
+
+export const handleDeleteProduct = async (data) => {
+  await productService.deleteProduct(data.params.id, data.user.id);
+
+  return {
+    statusCode: 200,
+    body: {
+      message: 'Product deleted successfully',
+    },
+  };
+};
