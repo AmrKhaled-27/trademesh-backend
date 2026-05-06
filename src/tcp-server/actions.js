@@ -1,5 +1,6 @@
 import * as authController from '../modules/auth/auth.controller.js';
 import * as userController from '../modules/user/user.controller.js';
+import * as apiKeyController from '../modules/api-key/apiKey.controller.js';
 import { ACTIONS } from '../utils/actionTypes.js';
 
 export const routes = {
@@ -8,4 +9,7 @@ export const routes = {
   [ACTIONS.AUTH_VERIFY_2FA]: authController.handleVerify2FA,
   [ACTIONS.AUTH_RESEND_OTP]: authController.handleResendOtp,
   [ACTIONS.USER_GET_ME]: userController.getMe,
+  [ACTIONS.API_KEY_CREATE]: apiKeyController.handleCreateApiKey,
+  [ACTIONS.API_KEY_LIST]: apiKeyController.handleListApiKeys,
+  [ACTIONS.API_KEY_REVOKE]: apiKeyController.handleRevokeApiKey,
 };
