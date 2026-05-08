@@ -10,40 +10,152 @@ export const productPaths = {
           'application/json': {
             schema: {
               type: 'object',
-              required: ['name', 'price', 'stock'],
+              required: ['name', 'price', 'brand'],
               properties: {
                 name: { type: 'string', example: 'Wireless Keyboard' },
-                description: { type: 'string', example: 'Compact wireless keyboard with backlight' },
-                imageUrl: {
+                description: {
+                  type: 'string',
+                  example: 'Compact wireless keyboard with backlight',
+                },
+                mainImage: {
                   type: 'string',
                   format: 'uri',
                   example: 'https://cdn.example.com/products/keyboard.jpg',
                 },
+                images: {
+                  type: 'array',
+                  items: { type: 'string', format: 'uri' },
+                  example: ['https://cdn.example.com/products/kb1.jpg'],
+                },
+                brand: { type: 'string', example: 'Logitech' },
                 price: { type: 'number', example: 49.99 },
-                stock: { type: 'integer', example: 35 },
               },
             },
           },
         },
       },
       responses: {
-        201: { description: 'Product created successfully' },
+        201: {
+          description: 'Product created successfully',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  message: { type: 'string', example: 'Product created successfully' },
+                  product: {
+                    type: 'object',
+                    properties: {
+                      id: { type: 'integer', example: 1 },
+                      name: { type: 'string', example: 'Wireless Keyboard' },
+                      description: {
+                        type: 'string',
+                        example: 'Compact wireless keyboard with backlight',
+                      },
+                      mainImage: {
+                        type: 'string',
+                        format: 'uri',
+                        example: 'https://cdn.example.com/products/keyboard.jpg',
+                      },
+                      images: {
+                        type: 'array',
+                        items: { type: 'string', format: 'uri' },
+                        example: [],
+                      },
+                      brand: { type: 'string', example: 'Logitech' },
+                      price: { type: 'number', example: 49.99 },
+                      status: { type: 'string', example: 'for_sale' },
+                      ownerId: { type: 'integer', example: 10 },
+                      createdAt: { type: 'string', format: 'date-time' },
+                      updatedAt: { type: 'string', format: 'date-time' },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
         401: { description: 'Unauthorized' },
       },
     },
     get: {
       tags: ['Products'],
-      summary: 'List active products',
+      summary: 'List active products (for sale)',
       parameters: [
         { name: 'search', in: 'query', required: false, schema: { type: 'string', minLength: 1 } },
-        { name: 'minPrice', in: 'query', required: false, schema: { type: 'number' } },
-        { name: 'maxPrice', in: 'query', required: false, schema: { type: 'number' } },
-        { name: 'inStock', in: 'query', required: false, schema: { type: 'boolean' } },
-        { name: 'page', in: 'query', required: false, schema: { type: 'integer', default: 1 } },
-        { name: 'limit', in: 'query', required: false, schema: { type: 'integer', default: 10 } },
+        { name: 'brand', in: 'query', required: false, schema: { type: 'string' } },
       ],
       responses: {
-        200: { description: 'Products retrieved successfully' },
+        200: {
+          description: 'Products retrieved successfully (teaser info)',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  products: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        id: { type: 'integer', example: 1 },
+                        name: { type: 'string', example: 'Wireless Keyboard' },
+                        description: { type: 'string', example: 'Compact wireless keyboard' },
+                        mainImage: {
+                          type: 'string',
+                          example: 'https://cdn.example.com/products/keyboard.jpg',
+                        },
+                        price: { type: 'number', example: 49.99 },
+                        brand: { type: 'string', example: 'Logitech' },
+                        status: { type: 'string', example: 'for_sale' },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  '/api/products/me': {
+    get: {
+      tags: ['Products'],
+      summary: 'Get current user products (bought, sold, for sale)',
+      security: [{ bearerAuth: [] }],
+      responses: {
+        200: {
+          description: 'User products retrieved successfully',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  products: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        id: { type: 'integer', example: 1 },
+                        name: { type: 'string', example: 'Wireless Keyboard' },
+                        description: { type: 'string' },
+                        mainImage: { type: 'string' },
+                        images: { type: 'array', items: { type: 'string' } },
+                        brand: { type: 'string' },
+                        price: { type: 'number' },
+                        status: { type: 'string', example: 'sold' },
+                        ownerId: { type: 'integer' },
+                        buyerId: { type: 'integer', example: 10 },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        401: { description: 'Unauthorized' },
       },
     },
   },
@@ -60,7 +172,33 @@ export const productPaths = {
         },
       ],
       responses: {
-        200: { description: 'Product retrieved successfully' },
+        200: {
+          description: 'Product retrieved successfully',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  product: {
+                    type: 'object',
+                    properties: {
+                      id: { type: 'integer', example: 1 },
+                      name: { type: 'string' },
+                      description: { type: 'string' },
+                      mainImage: { type: 'string' },
+                      images: { type: 'array', items: { type: 'string' } },
+                      brand: { type: 'string' },
+                      price: { type: 'number' },
+                      status: { type: 'string' },
+                      ownerId: { type: 'integer' },
+                      buyerId: { type: 'integer', nullable: true },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
         404: { description: 'Product not found' },
       },
     },
@@ -85,28 +223,44 @@ export const productPaths = {
               properties: {
                 name: { type: 'string', example: 'Mechanical Keyboard' },
                 description: { type: 'string', example: 'Updated product description' },
-                imageUrl: {
+                mainImage: {
                   type: 'string',
                   format: 'uri',
                   example: 'https://cdn.example.com/products/keyboard-v2.jpg',
                 },
+                images: {
+                  type: 'array',
+                  items: { type: 'string', format: 'uri' },
+                },
+                brand: { type: 'string', example: 'Logitech' },
                 price: { type: 'number', example: 59.99 },
-                stock: { type: 'integer', example: 20 },
-                isActive: { type: 'boolean', example: true },
               },
             },
           },
         },
       },
       responses: {
-        200: { description: 'Product updated successfully' },
+        200: {
+          description: 'Product updated successfully',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  message: { type: 'string', example: 'Product updated successfully' },
+                  product: { type: 'object' },
+                },
+              },
+            },
+          },
+        },
         401: { description: 'Unauthorized' },
         404: { description: 'Product not found' },
       },
     },
     delete: {
       tags: ['Products'],
-      summary: 'Delete (deactivate) a product',
+      summary: 'Delete a product',
       security: [{ bearerAuth: [] }],
       parameters: [
         {
@@ -117,7 +271,19 @@ export const productPaths = {
         },
       ],
       responses: {
-        200: { description: 'Product deleted successfully' },
+        200: {
+          description: 'Product deleted successfully',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  message: { type: 'string', example: 'Product deleted successfully' },
+                },
+              },
+            },
+          },
+        },
         401: { description: 'Unauthorized' },
         404: { description: 'Product not found' },
       },

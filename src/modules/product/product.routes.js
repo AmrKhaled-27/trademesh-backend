@@ -20,7 +20,12 @@ router.post(
 );
 
 router.get('/', validate({ query: listProductsQueryDto }), forwardAction(ACTIONS.PRODUCT_LIST));
-router.get('/:id', validate({ params: productParamsDto }), forwardAction(ACTIONS.PRODUCT_GET_BY_ID));
+router.get('/me', authenticate, forwardAction(ACTIONS.PRODUCT_GET_ME));
+router.get(
+  '/:id',
+  validate({ params: productParamsDto }),
+  forwardAction(ACTIONS.PRODUCT_GET_BY_ID),
+);
 
 router.patch(
   '/:id',

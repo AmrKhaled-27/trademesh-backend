@@ -13,13 +13,12 @@ export const handleCreateProduct = async (data) => {
 };
 
 export const handleListProducts = async (data) => {
-  const { items, pagination } = await productService.listProducts(data.query);
+  const products = await productService.listProducts(data.query);
 
   return {
     statusCode: 200,
     body: {
-      products: items,
-      pagination,
+      products,
     },
   };
 };
@@ -31,6 +30,17 @@ export const handleGetProductById = async (data) => {
     statusCode: 200,
     body: {
       product,
+    },
+  };
+};
+
+export const handleGetMyProducts = async (data) => {
+  const products = await productService.getMyProducts(data.user.id);
+
+  return {
+    statusCode: 200,
+    body: {
+      products,
     },
   };
 };

@@ -18,7 +18,8 @@ model User {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   apiKeys      ApiKey[]
-  products     Product[]
+  products     Product[] @relation("ProductOwner")
+  purchases    Product[] @relation("ProductBuyer")
 }
 
 
@@ -37,13 +38,17 @@ model Product {
   id          Int      @id @default(autoincrement())
   name        String
   description String?
-  imageUrl    String?
+  mainImage   String?
+  images      String[]
+  brand       String
   price       Float
-  stock       Int      @default(0)
-  isActive    Boolean  @default(true)
+  status      String   @default("for_sale") // 'for_sale' or 'sold'
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   ownerId Int
-  owner   User @relation(fields: [ownerId], references: [id])
+  owner   User @relation("ProductOwner", fields: [ownerId], references: [id])
+
+  buyerId Int?
+  buyer   User? @relation("ProductBuyer", fields: [buyerId], references: [id])
 }

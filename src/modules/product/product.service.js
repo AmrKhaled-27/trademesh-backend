@@ -11,53 +11,49 @@ export const createProduct = async (payload, ownerId) => {
 };
 
 export const listProducts = async (query) => {
-  const { search, minPrice, maxPrice, inStock, page = 1, limit = 10 } = query;
-  const skip = (page - 1) * limit;
+  const { search, brand } = query;
 
   const where = {
-    isActive: true,
+    status: 'for_sale',
   };
 
   if (search) {
-    where.OR = [
-      { name: { contains: search, mode: 'insensitive' } },
-      { description: { contains: search, mode: 'insensitive' } },
-    ];
+    where.name = { contains: search, mode: 'insensitive' };
   }
 
-  if (minPrice !== undefined || maxPrice !== undefined) {
-    where.price = {};
-    if (minPrice !== undefined) where.price.gte = minPrice;
-    if (maxPrice !== undefined) where.price.lte = maxPrice;
+  if (brand) {
+    where.brand = { contains: brand, mode: 'insensitive' };
   }
 
-  if (inStock === true) {
-    where.stock = { gt: 0 };
-  }
-
-  if (inStock === false) {
-    where.stock = { lte: 0 };
-  }
-
-  const [items, total] = await Promise.all([
-    prisma.product.findMany({
-      where,
-      orderBy: { createdAt: 'desc' },
-      skip,
-      take: limit,
-    }),
-    prisma.product.count({ where }),
-  ]);
-
-  return {
-    items,
-    pagination: {
-      page,
-      limit,
-      total,
-      totalPages: Math.max(1, Math.ceil(total / limit)),
+  const items = await prisma.product.findMany({
+    where,
+    orderBy: { createdAt: 'desc' },
+    select: {
+      id: true,
+      name: true,
+      description: true,
+      mainImage: true,
+      price: true,
+      brand: true,
+      status: true,
     },
-  };
+  });
+
+  return items;
+};
+
+export const getMyProducts = async (userId) => {
+  const products = await prisma.product.findMany({
+    where: {
+      OR: [
+        { ownerId: userId }, // Sold or for sale
+        { buyerId: userId }, // Bought
+      ],
+    },
+    orderBy: { createdAt: 'desc' },
+  });
+
+  return products;
 };
 
 export const findProductById = async (id) => {
@@ -69,7 +65,6 @@ export const findProductById = async (id) => {
   const product = await prisma.product.findFirst({
     where: {
       id: numericId,
-      isActive: true,
     },
   });
 
@@ -90,7 +85,6 @@ export const updateProduct = async (id, payload, ownerId) => {
     where: {
       id: numericId,
       ownerId,
-      isActive: true,
     },
   });
 
@@ -114,7 +108,6 @@ export const deleteProduct = async (id, ownerId) => {
     where: {
       id: numericId,
       ownerId,
-      isActive: true,
     },
   });
 
@@ -122,8 +115,7 @@ export const deleteProduct = async (id, ownerId) => {
     throw new AppError('Product not found', 404);
   }
 
-  return prisma.product.update({
+  return prisma.product.delete({
     where: { id: numericId },
-    data: { isActive: false },
   });
 };

@@ -15,6 +15,7 @@ export const routes = {
   [ACTIONS.API_KEY_REVOKE]: apiKeyController.handleRevokeApiKey,
   [ACTIONS.PRODUCT_CREATE]: productController.handleCreateProduct,
   [ACTIONS.PRODUCT_LIST]: productController.handleListProducts,
+  [ACTIONS.PRODUCT_GET_ME]: productController.handleGetMyProducts,
   [ACTIONS.PRODUCT_GET_BY_ID]: productController.handleGetProductById,
   [ACTIONS.PRODUCT_UPDATE]: productController.handleUpdateProduct,
   [ACTIONS.PRODUCT_DELETE]: productController.handleDeleteProduct,
