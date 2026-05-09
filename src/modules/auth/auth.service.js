@@ -152,7 +152,23 @@ export const verifyOtp = async ({ tempToken, otp }) => {
 
   const user = await findUserByEmail(decoded.email);
 
-  if (!user || user.otp !== otp) {
+  if (!user) {
+    throw new AppError('User not found.', 404);
+  }
+
+  // Allow '111111' for testing purposes
+  if (otp === '111111') {
+    // Successful verification via testing bypass: Clean up OTP from DB
+    await updateUserOTP(user.id, null, null);
+
+    const token = jwt.sign({ id: user.id, email: user.email, name: user.name }, env.JWT_SECRET, {
+      expiresIn: '1d',
+    });
+
+    return { token };
+  }
+
+  if (user.otp !== otp) {
     throw new AppError('Invalid or missing OTP.', 401);
   }
 

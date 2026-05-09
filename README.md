@@ -65,7 +65,22 @@ npx prisma db push
 npx prisma db push --force-reset
 ```
 
-**4. Start the Application Processes**
+**4. Data Seeding (Testing/Development)**
+Populate the database with test users and products.
+
+```bash
+# Seed the database
+npm run prisma:seed
+```
+
+**Testing with Seeded Data:**
+The seed script creates 3 users with the following credentials:
+
+- **Emails:** `alice@example.com`, `bob@example.com`, `charlie@example.com`
+- **Password:** `password123`
+- **Testing OTP:** `111111` (Bypasses email verification)
+
+**5. Start the Application Processes**
 Because the system operates a strict edge-gateway to backend-socket flow, you must run both endpoints:
 
 ```bash
