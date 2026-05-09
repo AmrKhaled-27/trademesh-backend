@@ -2,6 +2,10 @@ import { authPaths } from '../../modules/auth/auth.docs.js';
 import { userPaths } from '../../modules/user/user.docs.js';
 import { apiKeyPaths } from '../../modules/api-key/apiKey.docs.js';
 import { productPaths } from '../../modules/product/product.docs.js';
+
+// Wallet Swagger docs added by the wallet feature owner.
+import { walletPaths } from '../../modules/wallet/wallet.docs.js';
+
 export const swaggerDocument = {
   openapi: '3.0.0',
   info: {
@@ -66,11 +70,17 @@ export const swaggerDocument = {
     { name: 'Users', description: 'User Profile and Management' },
     { name: 'API Keys', description: 'API key management for external store integrations' },
     { name: 'Products', description: 'Product catalog management' },
+
+    // Wallet tag added by the wallet feature owner.
+    { name: 'Wallet', description: 'Wallet balance operations' },
   ],
   paths: {
     ...authPaths,
     ...userPaths,
     ...apiKeyPaths,
     ...productPaths,
+
+    // Wallet paths added by the wallet feature owner.
+    ...walletPaths,
   },
 };

@@ -7,9 +7,14 @@ import authRoutes from '../modules/auth/auth.routes.js';
 import userRoutes from '../modules/user/user.routes.js';
 import apiKeyRoutes from '../modules/api-key/apiKey.routes.js';
 import productRoutes from '../modules/product/product.routes.js';
+
+// Wallet routes added by the wallet feature owner.
+import walletRoutes from '../modules/wallet/wallet.routes.js';
+
 import { responseInterceptor } from './middlewares/responseInterceptor.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { swaggerDocument } from './docs/swagger.js';
+
 const app = express();
 const PORT = env.PORT;
 
@@ -25,6 +30,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/api-keys', apiKeyRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/wallet', walletRoutes);
+
 // General catch for unknown routes (404)
 app.use((req, res, next) => {
   res.status(404).json({ success: false, message: 'Route not found' });
