@@ -58,11 +58,15 @@ export const walletPaths = {
           'application/json': {
             schema: {
               type: 'object',
-              required: ['amount'],
+              required: ['amount', 'bankAccountNumber'],
               properties: {
                 amount: {
                   type: 'number',
                   example: 50,
+                },
+                bankAccountNumber: {
+                  type: 'string',
+                  example: '1234567890',
                 },
               },
             },

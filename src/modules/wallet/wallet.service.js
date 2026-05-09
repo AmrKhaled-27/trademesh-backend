@@ -1,23 +1,17 @@
 import { prisma } from '../../utils/prisma.js';
 import { AppError } from '../../utils/AppError.js';
 
-const mockPaymentProvider = ({ cardNumber, cvv, expiryDate, amount }) => {
-  if (!cardNumber || !cvv || !expiryDate) {
-    throw new AppError('Invalid mock payment data', 400);
+const runWithTransaction = async (transactionClient, callback) => {
+  if (transactionClient) {
+    return callback(transactionClient);
   }
 
-  if (Number(amount) <= 0) {
-    throw new AppError('Amount must be greater than 0', 400);
-  }
-
-  return true;
+  return prisma.$transaction(callback);
 };
 
-export const deposit = async (userId, { amount, cardNumber, cvv, expiryDate }) => {
-  mockPaymentProvider({ cardNumber, cvv, expiryDate, amount });
-
-  return await prisma.$transaction(async (tx) => {
-    const updatedUser = await tx.user.update({
+export const deposit = async (userId, { amount }, transactionClient = null) => {
+  return runWithTransaction(transactionClient, async (db) => {
+    const updatedUser = await db.user.update({
       where: { id: userId },
       data: {
         balance: {
@@ -41,25 +35,20 @@ export const deposit = async (userId, { amount, cardNumber, cvv, expiryDate }) =
   });
 };
 
-export const withdraw = async (userId, { amount }) => {
-  return await prisma.$transaction(async (tx) => {
-    const user = await tx.user.findUnique({
+export const withdraw = async (userId, { amount }, transactionClient = null) => {
+  return runWithTransaction(transactionClient, async (db) => {
+    const user = await db.user.findUnique({
       where: { id: userId },
       select: {
-        id: true,
         balance: true,
       },
     });
-
-    if (!user) {
-      throw new AppError('User not found', 404);
-    }
 
     if (user.balance < amount) {
       throw new AppError('Insufficient balance', 400);
     }
 
-    const updatedUser = await tx.user.update({
+    const updatedUser = await db.user.update({
       where: { id: userId },
       data: {
         balance: {

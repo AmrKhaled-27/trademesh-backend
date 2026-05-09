@@ -12,4 +12,6 @@ export const depositDto = z.object({
 
 export const withdrawDto = z.object({
   amount: z.number().positive('Amount must be greater than 0'),
+
+  bankAccountNumber: z.string().min(8, 'Bank account number must be at least 8 digits'),
 });
