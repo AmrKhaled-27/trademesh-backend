@@ -56,6 +56,12 @@ async function main() {
       status: 'for_sale',
       ownerId: user1.id,
       mainImage: 'https://picsum.photos/500?random=1',
+      images: [
+        'https://picsum.photos/500?random=101',
+        'https://picsum.photos/500?random=102',
+        'https://picsum.photos/500?random=103',
+        'https://picsum.photos/500?random=104',
+      ],
     },
     {
       name: 'Gaming Mouse',
@@ -66,6 +72,12 @@ async function main() {
       ownerId: user1.id,
       buyerId: user2.id,
       mainImage: 'https://picsum.photos/500?random=2',
+      images: [
+        'https://picsum.photos/500?random=105',
+        'https://picsum.photos/500?random=106',
+        'https://picsum.photos/500?random=107',
+        'https://picsum.photos/500?random=108',
+      ],
     },
     {
       name: 'USB-C Hub',
@@ -76,6 +88,12 @@ async function main() {
       ownerId: user1.id,
       buyerId: user3.id,
       mainImage: 'https://picsum.photos/500?random=3',
+      images: [
+        'https://picsum.photos/500?random=109',
+        'https://picsum.photos/500?random=110',
+        'https://picsum.photos/500?random=111',
+        'https://picsum.photos/500?random=112',
+      ],
     },
 
     // Bob's Products
@@ -87,6 +105,12 @@ async function main() {
       status: 'for_sale',
       ownerId: user2.id,
       mainImage: 'https://picsum.photos/500?random=4',
+      images: [
+        'https://picsum.photos/500?random=113',
+        'https://picsum.photos/500?random=114',
+        'https://picsum.photos/500?random=115',
+        'https://picsum.photos/500?random=116',
+      ],
     },
     {
       name: 'Webcam 4K',
@@ -97,6 +121,12 @@ async function main() {
       ownerId: user2.id,
       buyerId: user1.id, // Alice bought this
       mainImage: 'https://picsum.photos/500?random=5',
+      images: [
+        'https://picsum.photos/500?random=117',
+        'https://picsum.photos/500?random=118',
+        'https://picsum.photos/500?random=119',
+        'https://picsum.photos/500?random=120',
+      ],
     },
     {
       name: 'Monitor Light Bar',
@@ -107,6 +137,12 @@ async function main() {
       ownerId: user2.id,
       buyerId: user3.id,
       mainImage: 'https://picsum.photos/500?random=6',
+      images: [
+        'https://picsum.photos/500?random=121',
+        'https://picsum.photos/500?random=122',
+        'https://picsum.photos/500?random=123',
+        'https://picsum.photos/500?random=124',
+      ],
     },
 
     // Charlie's Products
@@ -118,6 +154,12 @@ async function main() {
       status: 'for_sale',
       ownerId: user3.id,
       mainImage: 'https://picsum.photos/500?random=7',
+      images: [
+        'https://picsum.photos/500?random=125',
+        'https://picsum.photos/500?random=126',
+        'https://picsum.photos/500?random=127',
+        'https://picsum.photos/500?random=128',
+      ],
     },
     {
       name: 'UltraWide Monitor',
@@ -128,6 +170,12 @@ async function main() {
       ownerId: user3.id,
       buyerId: user1.id, // Alice bought this
       mainImage: 'https://picsum.photos/500?random=8',
+      images: [
+        'https://picsum.photos/500?random=129',
+        'https://picsum.photos/500?random=130',
+        'https://picsum.photos/500?random=131',
+        'https://picsum.photos/500?random=132',
+      ],
     },
     {
       name: 'Phone Stand',
@@ -138,6 +186,12 @@ async function main() {
       ownerId: user3.id,
       buyerId: user2.id, // Bob bought this
       mainImage: 'https://picsum.photos/500?random=9',
+      images: [
+        'https://picsum.photos/500?random=133',
+        'https://picsum.photos/500?random=134',
+        'https://picsum.photos/500?random=135',
+        'https://picsum.photos/500?random=136',
+      ],
     },
 
     // A few more for-sale products to reach >10
@@ -149,6 +203,12 @@ async function main() {
       status: 'for_sale',
       ownerId: user1.id,
       mainImage: 'https://picsum.photos/500?random=10',
+      images: [
+        'https://picsum.photos/500?random=137',
+        'https://picsum.photos/500?random=138',
+        'https://picsum.photos/500?random=139',
+        'https://picsum.photos/500?random=140',
+      ],
     },
     {
       name: 'Mechanical Pencil Set',
@@ -158,6 +218,12 @@ async function main() {
       status: 'for_sale',
       ownerId: user2.id,
       mainImage: 'https://picsum.photos/500?random=11',
+      images: [
+        'https://picsum.photos/500?random=141',
+        'https://picsum.photos/500?random=142',
+        'https://picsum.photos/500?random=143',
+        'https://picsum.photos/500?random=144',
+      ],
     },
     {
       name: 'Smart Water Bottle',
@@ -167,6 +233,12 @@ async function main() {
       status: 'for_sale',
       ownerId: user3.id,
       mainImage: 'https://picsum.photos/500?random=12',
+      images: [
+        'https://picsum.photos/500?random=145',
+        'https://picsum.photos/500?random=146',
+        'https://picsum.photos/500?random=147',
+        'https://picsum.photos/500?random=148',
+      ],
     },
   ];
 
