@@ -18,6 +18,8 @@ model User {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   apiKeys      ApiKey[]
+  products     Product[]     @relation("UserProducts")
+  transactions Transaction[] @relation("UserTransactions")
 }
 
 
@@ -30,4 +32,31 @@ model ApiKey {
 
   userId Int?
   user   User? @relation(fields: [userId], references: [id])
+}
+
+model Product {
+  id          Int       @id @default(autoincrement())
+  name        String
+  brand       String
+  description String?
+  price       Float
+  stock       Int       @default(1)
+  isLocked    Boolean   @default(false)
+  ownerId     Int
+  owner       User      @relation("UserProducts", fields: [ownerId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  transactions Transaction[]
+}
+
+model Transaction {
+  id          Int       @id @default(autoincrement())
+  buyerId     Int
+  buyer       User      @relation("UserTransactions", fields: [buyerId], references: [id])
+  productId   Int
+  product     Product   @relation(fields: [productId], references: [id])
+  amount      Float
+  status      String
+  createdAt   DateTime  @default(now())
 }

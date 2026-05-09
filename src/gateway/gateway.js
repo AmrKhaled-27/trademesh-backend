@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { env } from '../config/env.js'; // MUST be imported immediately after dotenv
+import { env } from '../config/env.js';
 import express from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
@@ -9,6 +9,9 @@ import apiKeyRoutes from '../modules/api-key/apiKey.routes.js';
 import { responseInterceptor } from './middlewares/responseInterceptor.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { swaggerDocument } from './docs/swagger.js';
+import transactionRoutes from '../modules/transaction/transaction.routes.js';
+
+
 const app = express();
 const PORT = env.PORT;
 
@@ -23,6 +26,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/api-keys', apiKeyRoutes);
+app.use('/api/transactions', transactionRoutes);
+
 // General catch for unknown routes (404)
 app.use((req, res, next) => {
   res.status(404).json({ success: false, message: 'Route not found' });
@@ -34,3 +39,4 @@ app.use(errorHandler);
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+

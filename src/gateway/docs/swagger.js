@@ -1,6 +1,8 @@
 import { authPaths } from '../../modules/auth/auth.docs.js';
 import { userPaths } from '../../modules/user/user.docs.js';
 import { apiKeyPaths } from '../../modules/api-key/apiKey.docs.js';
+import { transactionPaths } from '../../modules/transaction/transaction.docs.js';
+
 export const swaggerDocument = {
   openapi: '3.0.0',
   info: {
@@ -64,10 +66,12 @@ export const swaggerDocument = {
     { name: 'Auth', description: 'Authentication and 2FA' },
     { name: 'Users', description: 'User Profile and Management' },
     { name: 'API Keys', description: 'API key management for external store integrations' },
+    { name: 'Transactions', description: 'Transaction management' },
   ],
   paths: {
     ...authPaths,
     ...userPaths,
     ...apiKeyPaths,
+    ...transactionPaths,
   },
 };
