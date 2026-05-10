@@ -20,6 +20,9 @@ model User {
   apiKeys      ApiKey[]
   products     Product[] @relation("ProductOwner")
   purchases    Product[] @relation("ProductBuyer")
+
+  sentTransactions     Transaction[] @relation("SentTransactions")
+  receivedTransactions Transaction[] @relation("ReceivedTransactions")
 }
 
 
@@ -51,4 +54,22 @@ model Product {
 
   buyerId Int?
   buyer   User? @relation("ProductBuyer", fields: [buyerId], references: [id])
+
+  transactions Transaction[] @relation("ProductTransactions")
 }
+
+model Transaction {
+  id          Int      @id @default(autoincrement())
+  type        String   // 'deposit', 'withdraw', or 'selling_operation'
+  amount      Float
+  createdAt   DateTime @default(now())
+
+  senderId    Int?
+  sender      User?    @relation("SentTransactions", fields: [senderId], references: [id])
+
+  receiverId  Int?
+  receiver    User?    @relation("ReceivedTransactions", fields: [receiverId], references: [id])
+
+  productId   Int?
+  product     Product? @relation("ProductTransactions", fields: [productId], references: [id])
+}

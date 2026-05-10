@@ -1,5 +1,6 @@
 import { prisma } from '../../utils/prisma.js';
 import { AppError } from '../../utils/AppError.js';
+import { createTransaction } from '../transaction/transaction.service.js';
 
 const runWithTransaction = async (transactionClient, callback) => {
   if (transactionClient) {
@@ -25,6 +26,15 @@ export const deposit = async (userId, { amount }, transactionClient = null) => {
         balance: true,
       },
     });
+
+    await createTransaction(
+      {
+        type: 'deposit',
+        amount,
+        receiverId: userId,
+      },
+      db,
+    );
 
     return {
       userId: updatedUser.id,
@@ -62,6 +72,15 @@ export const withdraw = async (userId, { amount }, transactionClient = null) => 
         balance: true,
       },
     });
+
+    await createTransaction(
+      {
+        type: 'withdraw',
+        amount,
+        senderId: userId,
+      },
+      db,
+    );
 
     return {
       userId: updatedUser.id,
