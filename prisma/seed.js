@@ -7,6 +7,7 @@ async function main() {
   console.log('Seeding database...');
 
   // Clear existing data
+  await prisma.transaction.deleteMany();
   await prisma.product.deleteMany();
   await prisma.user.deleteMany();
 
@@ -245,6 +246,62 @@ async function main() {
   for (const product of productsData) {
     await prisma.product.create({
       data: product,
+    });
+  }
+
+  // 3. Seed Transactions
+  const seededProducts = await prisma.product.findMany();
+
+  const transactionsData = [
+    // Alice's transactions
+    { type: 'deposit', amount: 500.0, receiverId: user1.id },
+    { type: 'withdraw', amount: 50.0, senderId: user1.id },
+    {
+      type: 'selling_operation',
+      amount: 180.0,
+      senderId: user1.id, // Alice bought
+      receiverId: user2.id, // From Bob
+      productId: seededProducts.find((p) => p.name === 'Webcam 4K').id,
+    },
+
+    // Bob's transactions
+    { type: 'deposit', amount: 300.0, receiverId: user2.id },
+    {
+      type: 'selling_operation',
+      amount: 50.0,
+      senderId: user2.id, // Bob bought
+      receiverId: user1.id, // From Alice
+      productId: seededProducts.find((p) => p.name === 'Gaming Mouse').id,
+    },
+    {
+      type: 'selling_operation',
+      amount: 15.0,
+      senderId: user2.id, // Bob bought
+      receiverId: user3.id, // From Charlie
+      productId: seededProducts.find((p) => p.name === 'Phone Stand').id,
+    },
+
+    // Charlie's transactions
+    { type: 'deposit', amount: 1000.0, receiverId: user3.id },
+    {
+      type: 'selling_operation',
+      amount: 35.0,
+      senderId: user3.id, // Charlie bought
+      receiverId: user1.id, // From Alice
+      productId: seededProducts.find((p) => p.name === 'USB-C Hub').id,
+    },
+    {
+      type: 'selling_operation',
+      amount: 99.0,
+      senderId: user3.id, // Charlie bought
+      receiverId: user2.id, // From Bob
+      productId: seededProducts.find((p) => p.name === 'Monitor Light Bar').id,
+    },
+  ];
+
+  for (const tx of transactionsData) {
+    await prisma.transaction.create({
+      data: tx,
     });
   }
 

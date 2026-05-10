@@ -10,6 +10,7 @@ import productRoutes from '../modules/product/product.routes.js';
 
 // Wallet routes added by the wallet feature owner.
 import walletRoutes from '../modules/wallet/wallet.routes.js';
+import transactionRoutes from '../modules/transaction/transaction.routes.js';
 
 import { responseInterceptor } from './middlewares/responseInterceptor.js';
 import { errorHandler } from './middlewares/errorHandler.js';
@@ -31,6 +32,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/api-keys', apiKeyRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/wallet', walletRoutes);
+app.use('/api/transactions', transactionRoutes);
 
 // General catch for unknown routes (404)
 app.use((req, res, next) => {
