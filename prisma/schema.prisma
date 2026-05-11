@@ -20,6 +20,8 @@ model User {
   apiKeys      ApiKey[]
   products     Product[] @relation("ProductOwner")
   purchases    Product[] @relation("ProductBuyer")
+  checkouts    Checkout[] @relation("CheckoutBuyer")
+  sales        Checkout[] @relation("CheckoutSeller")
 }
 
 
@@ -51,4 +53,22 @@ model Product {
 
   buyerId Int?
   buyer   User? @relation("ProductBuyer", fields: [buyerId], references: [id])
+
+  checkout Checkout?
+}
+
+model Checkout {
+  id        Int      @id @default(autoincrement())
+  productId Int      @unique
+  product   Product  @relation(fields: [productId], references: [id])
+
+  buyerId Int
+  buyer   User @relation("CheckoutBuyer", fields: [buyerId], references: [id])
+
+  sellerId Int
+  seller   User @relation("CheckoutSeller", fields: [sellerId], references: [id])
+
+  amount    Float
+  status    String   @default("completed")
+  createdAt DateTime @default(now())
 }
