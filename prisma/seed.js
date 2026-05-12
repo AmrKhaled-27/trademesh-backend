@@ -7,6 +7,7 @@ async function main() {
   console.log('Seeding database...');
 
   // Clear existing data
+  await prisma.transaction.deleteMany();
   await prisma.product.deleteMany();
   await prisma.user.deleteMany();
 
@@ -56,6 +57,12 @@ async function main() {
       status: 'for_sale',
       ownerId: user1.id,
       mainImage: 'https://picsum.photos/500?random=1',
+      images: [
+        'https://picsum.photos/500?random=101',
+        'https://picsum.photos/500?random=102',
+        'https://picsum.photos/500?random=103',
+        'https://picsum.photos/500?random=104',
+      ],
     },
     {
       name: 'Gaming Mouse',
@@ -66,6 +73,12 @@ async function main() {
       ownerId: user1.id,
       buyerId: user2.id,
       mainImage: 'https://picsum.photos/500?random=2',
+      images: [
+        'https://picsum.photos/500?random=105',
+        'https://picsum.photos/500?random=106',
+        'https://picsum.photos/500?random=107',
+        'https://picsum.photos/500?random=108',
+      ],
     },
     {
       name: 'USB-C Hub',
@@ -76,6 +89,12 @@ async function main() {
       ownerId: user1.id,
       buyerId: user3.id,
       mainImage: 'https://picsum.photos/500?random=3',
+      images: [
+        'https://picsum.photos/500?random=109',
+        'https://picsum.photos/500?random=110',
+        'https://picsum.photos/500?random=111',
+        'https://picsum.photos/500?random=112',
+      ],
     },
 
     // Bob's Products
@@ -87,6 +106,12 @@ async function main() {
       status: 'for_sale',
       ownerId: user2.id,
       mainImage: 'https://picsum.photos/500?random=4',
+      images: [
+        'https://picsum.photos/500?random=113',
+        'https://picsum.photos/500?random=114',
+        'https://picsum.photos/500?random=115',
+        'https://picsum.photos/500?random=116',
+      ],
     },
     {
       name: 'Webcam 4K',
@@ -97,6 +122,12 @@ async function main() {
       ownerId: user2.id,
       buyerId: user1.id, // Alice bought this
       mainImage: 'https://picsum.photos/500?random=5',
+      images: [
+        'https://picsum.photos/500?random=117',
+        'https://picsum.photos/500?random=118',
+        'https://picsum.photos/500?random=119',
+        'https://picsum.photos/500?random=120',
+      ],
     },
     {
       name: 'Monitor Light Bar',
@@ -107,6 +138,12 @@ async function main() {
       ownerId: user2.id,
       buyerId: user3.id,
       mainImage: 'https://picsum.photos/500?random=6',
+      images: [
+        'https://picsum.photos/500?random=121',
+        'https://picsum.photos/500?random=122',
+        'https://picsum.photos/500?random=123',
+        'https://picsum.photos/500?random=124',
+      ],
     },
 
     // Charlie's Products
@@ -118,6 +155,12 @@ async function main() {
       status: 'for_sale',
       ownerId: user3.id,
       mainImage: 'https://picsum.photos/500?random=7',
+      images: [
+        'https://picsum.photos/500?random=125',
+        'https://picsum.photos/500?random=126',
+        'https://picsum.photos/500?random=127',
+        'https://picsum.photos/500?random=128',
+      ],
     },
     {
       name: 'UltraWide Monitor',
@@ -128,6 +171,12 @@ async function main() {
       ownerId: user3.id,
       buyerId: user1.id, // Alice bought this
       mainImage: 'https://picsum.photos/500?random=8',
+      images: [
+        'https://picsum.photos/500?random=129',
+        'https://picsum.photos/500?random=130',
+        'https://picsum.photos/500?random=131',
+        'https://picsum.photos/500?random=132',
+      ],
     },
     {
       name: 'Phone Stand',
@@ -138,6 +187,12 @@ async function main() {
       ownerId: user3.id,
       buyerId: user2.id, // Bob bought this
       mainImage: 'https://picsum.photos/500?random=9',
+      images: [
+        'https://picsum.photos/500?random=133',
+        'https://picsum.photos/500?random=134',
+        'https://picsum.photos/500?random=135',
+        'https://picsum.photos/500?random=136',
+      ],
     },
 
     // A few more for-sale products to reach >10
@@ -149,6 +204,12 @@ async function main() {
       status: 'for_sale',
       ownerId: user1.id,
       mainImage: 'https://picsum.photos/500?random=10',
+      images: [
+        'https://picsum.photos/500?random=137',
+        'https://picsum.photos/500?random=138',
+        'https://picsum.photos/500?random=139',
+        'https://picsum.photos/500?random=140',
+      ],
     },
     {
       name: 'Mechanical Pencil Set',
@@ -158,6 +219,12 @@ async function main() {
       status: 'for_sale',
       ownerId: user2.id,
       mainImage: 'https://picsum.photos/500?random=11',
+      images: [
+        'https://picsum.photos/500?random=141',
+        'https://picsum.photos/500?random=142',
+        'https://picsum.photos/500?random=143',
+        'https://picsum.photos/500?random=144',
+      ],
     },
     {
       name: 'Smart Water Bottle',
@@ -167,12 +234,74 @@ async function main() {
       status: 'for_sale',
       ownerId: user3.id,
       mainImage: 'https://picsum.photos/500?random=12',
+      images: [
+        'https://picsum.photos/500?random=145',
+        'https://picsum.photos/500?random=146',
+        'https://picsum.photos/500?random=147',
+        'https://picsum.photos/500?random=148',
+      ],
     },
   ];
 
   for (const product of productsData) {
     await prisma.product.create({
       data: product,
+    });
+  }
+
+  // 3. Seed Transactions
+  const seededProducts = await prisma.product.findMany();
+
+  const transactionsData = [
+    // Alice's transactions
+    { type: 'deposit', amount: 500.0, receiverId: user1.id },
+    { type: 'withdraw', amount: 50.0, senderId: user1.id },
+    {
+      type: 'selling_operation',
+      amount: 180.0,
+      senderId: user1.id, // Alice bought
+      receiverId: user2.id, // From Bob
+      productId: seededProducts.find((p) => p.name === 'Webcam 4K').id,
+    },
+
+    // Bob's transactions
+    { type: 'deposit', amount: 300.0, receiverId: user2.id },
+    {
+      type: 'selling_operation',
+      amount: 50.0,
+      senderId: user2.id, // Bob bought
+      receiverId: user1.id, // From Alice
+      productId: seededProducts.find((p) => p.name === 'Gaming Mouse').id,
+    },
+    {
+      type: 'selling_operation',
+      amount: 15.0,
+      senderId: user2.id, // Bob bought
+      receiverId: user3.id, // From Charlie
+      productId: seededProducts.find((p) => p.name === 'Phone Stand').id,
+    },
+
+    // Charlie's transactions
+    { type: 'deposit', amount: 1000.0, receiverId: user3.id },
+    {
+      type: 'selling_operation',
+      amount: 35.0,
+      senderId: user3.id, // Charlie bought
+      receiverId: user1.id, // From Alice
+      productId: seededProducts.find((p) => p.name === 'USB-C Hub').id,
+    },
+    {
+      type: 'selling_operation',
+      amount: 99.0,
+      senderId: user3.id, // Charlie bought
+      receiverId: user2.id, // From Bob
+      productId: seededProducts.find((p) => p.name === 'Monitor Light Bar').id,
+    },
+  ];
+
+  for (const tx of transactionsData) {
+    await prisma.transaction.create({
+      data: tx,
     });
   }
 

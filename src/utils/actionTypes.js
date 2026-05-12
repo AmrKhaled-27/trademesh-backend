@@ -27,4 +27,7 @@ export const ACTIONS = {
   // Wallet Actions
   WALLET_DEPOSIT: 'WALLET_DEPOSIT',
   WALLET_WITHDRAW: 'WALLET_WITHDRAW',
+
+  // Transaction Actions
+  TRANSACTION_GET_ME: 'TRANSACTION_GET_ME',
 };
