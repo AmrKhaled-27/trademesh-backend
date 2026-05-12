@@ -3,7 +3,6 @@ import * as userController from '../modules/user/user.controller.js';
 import * as apiKeyController from '../modules/api-key/apiKey.controller.js';
 import * as productController from '../modules/product/product.controller.js';
 import * as walletController from '../modules/wallet/wallet.controller.js';
-import * as checkoutController from '../modules/checkout/checkout.controller.js';
 import { ACTIONS } from '../utils/actionTypes.js';
 
 export const routes = {
@@ -25,8 +24,4 @@ export const routes = {
   [ACTIONS.PRODUCT_DELETE]: productController.handleDeleteProduct,
   [ACTIONS.WALLET_DEPOSIT]: walletController.handleDeposit,
   [ACTIONS.WALLET_WITHDRAW]: walletController.handleWithdraw,
-
-  [ACTIONS.CHECKOUT_CREATE]: checkoutController.handleCheckout,
-  [ACTIONS.CHECKOUT_GET_ME]: checkoutController.handleGetMyCheckouts,
-  [ACTIONS.CHECKOUT_GET_BY_ID]: checkoutController.handleGetCheckoutById,
 };

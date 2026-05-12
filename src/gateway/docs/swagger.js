@@ -2,7 +2,6 @@ import { authPaths } from '../../modules/auth/auth.docs.js';
 import { userPaths } from '../../modules/user/user.docs.js';
 import { apiKeyPaths } from '../../modules/api-key/apiKey.docs.js';
 import { productPaths } from '../../modules/product/product.docs.js';
-import { checkoutPaths } from '../../modules/checkout/checkout.docs.js';
 
 // Wallet Swagger docs added by the wallet feature owner.
 import { walletPaths } from '../../modules/wallet/wallet.docs.js';
@@ -74,8 +73,6 @@ export const swaggerDocument = {
 
     // Wallet tag added by the wallet feature owner.
     { name: 'Wallet', description: 'Wallet balance operations' },
-
-    { name: 'Checkout', description: 'Atomic product checkout and purchase history' },
   ],
   paths: {
     ...authPaths,
@@ -85,7 +82,5 @@ export const swaggerDocument = {
 
     // Wallet paths added by the wallet feature owner.
     ...walletPaths,
-
-    ...checkoutPaths,
   },
 };
