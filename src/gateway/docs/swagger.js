@@ -6,6 +6,7 @@ import { productPaths } from '../../modules/product/product.docs.js';
 // Wallet Swagger docs added by the wallet feature owner.
 import { walletPaths } from '../../modules/wallet/wallet.docs.js';
 import { checkoutDocs } from '../../modules/checkout/checkout.docs.js';
+import { reportsPaths } from '../../modules/reports/reports.docs.js';
 
 export const swaggerDocument = {
   openapi: '3.0.0',
@@ -75,6 +76,7 @@ export const swaggerDocument = {
 
     // Wallet tag added by the wallet feature owner.
     { name: 'Wallet', description: 'Wallet balance operations' },
+    { name: 'Reports', description: 'Financial reports and analytics' },
   ],
   paths: {
     ...authPaths,
@@ -85,5 +87,6 @@ export const swaggerDocument = {
     // Wallet paths added by the wallet feature owner.
     ...walletPaths,
     ...checkoutDocs,
+    ...reportsPaths,
   },
 };
