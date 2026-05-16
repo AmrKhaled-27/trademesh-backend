@@ -8,6 +8,7 @@ import userRoutes from '../modules/user/user.routes.js';
 import apiKeyRoutes from '../modules/api-key/apiKey.routes.js';
 import productRoutes from '../modules/product/product.routes.js';
 import checkoutRoutes from '../modules/checkout/checkout.routes.js';
+import reportsRoutes from '../modules/reports/reports.routes.js';
 
 // Wallet routes added by the wallet feature owner.
 import walletRoutes from '../modules/wallet/wallet.routes.js';
@@ -35,6 +36,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/checkout', checkoutRoutes);
 app.use('/api/wallet', walletRoutes);
 app.use('/api/transactions', transactionRoutes);
+app.use('/api/reports', reportsRoutes);
 
 // General catch for unknown routes (404)
 app.use((req, res, next) => {

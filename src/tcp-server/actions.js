@@ -4,6 +4,7 @@ import * as apiKeyController from '../modules/api-key/apiKey.controller.js';
 import * as productController from '../modules/product/product.controller.js';
 import * as walletController from '../modules/wallet/wallet.controller.js';
 import * as transactionController from '../modules/transaction/transaction.controller.js';
+import * as reportsController from '../modules/reports/reports.controller.js';
 import { ACTIONS } from '../utils/actionTypes.js';
 
 export const routes = {
@@ -26,4 +27,8 @@ export const routes = {
   [ACTIONS.WALLET_DEPOSIT]: walletController.handleDeposit,
   [ACTIONS.WALLET_WITHDRAW]: walletController.handleWithdraw,
   [ACTIONS.TRANSACTION_GET_ME]: transactionController.handleGetUserTransactions,
+
+  [ACTIONS.REPORTS_GET_SUMMARY]: reportsController.handleGetFinancialSummary,
+  [ACTIONS.REPORTS_GET_SALES_CHART]: reportsController.handleGetSalesChart,
+  [ACTIONS.REPORTS_GET_TOP_PRODUCTS]: reportsController.handleGetTopProducts,
 };
