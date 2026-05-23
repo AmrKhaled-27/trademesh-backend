@@ -119,6 +119,49 @@ export const productPaths = {
       },
     },
   },
+  '/api/products/bulk': {
+    post: {
+      tags: ['Products'],
+      summary: 'Bulk create products from CSV',
+      security: [{ bearerAuth: [] }],
+      requestBody: {
+        required: true,
+        content: {
+          'multipart/form-data': {
+            schema: {
+              type: 'object',
+              properties: {
+                file: {
+                  type: 'string',
+                  format: 'binary',
+                  description: 'CSV file containing product data',
+                },
+              },
+            },
+          },
+        },
+      },
+      responses: {
+        201: {
+          description: 'Products created successfully',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  success: { type: 'boolean', example: true },
+                  message: { type: 'string', example: 'Products created successfully' },
+                  count: { type: 'integer', example: 5 },
+                },
+              },
+            },
+          },
+        },
+        400: { description: 'Invalid CSV or file missing' },
+        401: { description: 'Unauthorized' },
+      },
+    },
+  },
   '/api/products/me': {
     get: {
       tags: ['Products'],

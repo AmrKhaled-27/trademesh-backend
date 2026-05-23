@@ -12,6 +12,18 @@ export const handleCreateProduct = async (data) => {
   };
 };
 
+export const handleBulkCreateProduct = async (data) => {
+  const result = await productService.bulkCreateProducts(data.body.products, data.user.id);
+
+  return {
+    statusCode: 201,
+    body: {
+      message: 'Products created successfully',
+      count: result.count,
+    },
+  };
+};
+
 export const handleListProducts = async (data) => {
   const products = await productService.listProducts(data.query);
 

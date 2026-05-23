@@ -98,6 +98,18 @@ export const updateProduct = async (id, payload, ownerId) => {
   });
 };
 
+export const bulkCreateProducts = async (products, ownerId) => {
+  const productsWithUserId = products.map((product) => ({
+    ...product,
+    ownerId,
+    price: parseFloat(product.price),
+  }));
+
+  return prisma.product.createMany({
+    data: productsWithUserId,
+  });
+};
+
 export const deleteProduct = async (id, ownerId) => {
   const numericId = Number(id);
   if (Number.isNaN(numericId)) {

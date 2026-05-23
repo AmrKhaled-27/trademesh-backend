@@ -24,6 +24,7 @@ export const routes = {
   [ACTIONS.PRODUCT_GET_BY_ID]: productController.handleGetProductById,
   [ACTIONS.PRODUCT_UPDATE]: productController.handleUpdateProduct,
   [ACTIONS.PRODUCT_DELETE]: productController.handleDeleteProduct,
+  [ACTIONS.PRODUCT_BULK_CREATE]: productController.handleBulkCreateProduct,
   [ACTIONS.WALLET_DEPOSIT]: walletController.handleDeposit,
   [ACTIONS.WALLET_WITHDRAW]: walletController.handleWithdraw,
   [ACTIONS.TRANSACTION_GET_ME]: transactionController.handleGetUserTransactions,

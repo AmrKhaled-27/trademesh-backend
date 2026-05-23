@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { validate } from '../../gateway/middlewares/validate.js';
 import { authenticate } from '../../gateway/middlewares/authenticate.js';
 import { forwardAction } from '../../gateway/forwarder.js';
+import { uploadCsv, parseCsv } from '../../gateway/middlewares/csv-upload.js';
 import { ACTIONS } from '../../utils/actionTypes.js';
 import {
   createProductDto,
@@ -18,6 +19,8 @@ router.post(
   validate({ body: createProductDto }),
   forwardAction(ACTIONS.PRODUCT_CREATE),
 );
+
+router.post('/bulk', authenticate, uploadCsv, parseCsv, forwardAction(ACTIONS.PRODUCT_BULK_CREATE));
 
 router.get('/', validate({ query: listProductsQueryDto }), forwardAction(ACTIONS.PRODUCT_LIST));
 router.get('/me', authenticate, forwardAction(ACTIONS.PRODUCT_GET_ME));
